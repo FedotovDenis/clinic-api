@@ -1,16 +1,10 @@
-import { Router, Request, Response, NextFunction } from "express";
-import { authController } from "../controllers/auth.controller";
+import { Router } from "express";
+import { authController, AuthController } from "../controllers/auth.controller";
 
 const router = Router();
 
-const asyncHandler = (
-    fn: (req: Request, res: Response, next: NextFunction) => Promise<void>
-) => (req: Request, res: Response, next: NextFunction) => {
-    Promise.resolve(fn(req, res, next)).catch(next);
-};
-
-router.post("/register", asyncHandler(authController.register));
-router.post("/login", asyncHandler(authController.login));
-router.post("/forgot-password", asyncHandler(authController.forgotPassword));
+router.post("/register", AuthController.validateRegister, authController.register);
+router.post("/login", authController.login);
+router.post("/reset-password", AuthController.validateReset, authController.resetPassword);
 
 export const authRouter = router;

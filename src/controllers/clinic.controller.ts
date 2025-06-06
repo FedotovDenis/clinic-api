@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
 import { Clinic } from "../models/clinic.model";
+import { Service } from "../models/service.model";
+import { Doctor } from "../models/doctor.model";
 import { body, validationResult } from "express-validator";
 
 export class ClinicController {
@@ -25,15 +27,27 @@ export class ClinicController {
 
     async getAll(req: Request, res: Response) {
         try {
-            const { city, sortByRating } = req.query;
+            const { city, name, service, doctor, sortByName } = req.query;
             const query: any = {};
             if (city) query.city = city;
-            const clinics = await Clinic.find(query).sort(sortByRating ? { rating: sortByRating === "desc" ? -1 : 1 } : {});
+            if (name) query.name = { $regex: name, $options: "i" };
+            if (service) query.services = await Service.findOne({ name: { $regex: service, $options: "i" } }).select("_id");
+            if (doctor) {
+                const doctorDoc = await Doctor.findOne({
+                    $or: [
+                        { name: { $regex: doctor, $options: "i" } },
+                        { surname: { $regex: doctor, $options: "i" } },
+                    ],
+                }).select("_id");
+                if (doctorDoc) query.doctors = doctorDoc._id;
+            }
+            const clinics = await Clinic.find(query).sort(sortByName ? { name: sortByName === "desc" ? -1 : 1 } : { rating: -1 });
             res.status(200).json(clinics);
         } catch (error: any) {
             res.status(500).json({ message: "Server error", error: error.message });
         }
     }
+
     async getById(req: Request, res: Response) {
         try {
             const clinic = await Clinic.findById(req.params.id);

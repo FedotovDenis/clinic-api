@@ -1,7 +1,8 @@
 import { Router, Request, Response, NextFunction } from "express";
-import { serviceController, ServiceController } from "../controllers/service.controller";
+import { ServiceController } from "../controllers/service.controller";
 import { authMiddleware } from "../middleware/auth.middleware";
 import { adminMiddleware } from "../middleware/admin.middleware";
+import { check } from "express-validator";
 
 const router = Router();
 
@@ -11,10 +12,14 @@ const asyncHandler = (
     Promise.resolve(fn(req, res)).catch(next);
 };
 
-router.post("/", authMiddleware, adminMiddleware, ServiceController.validateService, asyncHandler(serviceController.create));
-router.get("/", asyncHandler(serviceController.getAll));
-router.get("/:id", asyncHandler(serviceController.getById));
-router.put("/:id", authMiddleware, adminMiddleware, ServiceController.validateService, asyncHandler(serviceController.update));
-router.delete("/:id", authMiddleware, adminMiddleware, asyncHandler(serviceController.delete));
+const validateService = [
+    check("name").notEmpty().withMessage("Name is required").isString().withMessage("Name must be a string"),
+];
+
+router.post("/", authMiddleware, adminMiddleware, validateService, asyncHandler(ServiceController.create));
+router.get("/", asyncHandler(ServiceController.getAll));
+router.get("/:id", asyncHandler(ServiceController.getById));
+router.put("/:id", authMiddleware, adminMiddleware, validateService, asyncHandler(ServiceController.update));
+router.delete("/:id", authMiddleware, adminMiddleware, asyncHandler(ServiceController.delete));
 
 export const serviceRouter = router;
