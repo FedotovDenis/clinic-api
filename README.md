@@ -112,4 +112,3 @@ All endpoints are documented in Swagger at `http://localhost:7000/api-docs`. Bel
 - **Submitted files**:
    - `Clinic API.postman_collection.json`: Postman collection for testing.
    - `dump.zip`: MongoDB database dump.
-- **Submission form**: https://forms.gle/CMnjbz4TPzw89JoR6
