@@ -1,13 +1,12 @@
 import { Request, Response } from "express";
-import { Clinic } from "../models/clinic.model";
+import { Doctor } from "../models/doctor.model";
 import { body, validationResult } from "express-validator";
 
-export class ClinicController {
-    static validateClinic = [
+export class DoctorController {
+    static validateDoctor = [
         body("name").notEmpty().withMessage("Name is required"),
-        body("address").notEmpty().withMessage("Address is required"),
-        body("city").notEmpty().withMessage("City is required"),
-        body("rating").optional().isFloat({ min: 0, max: 5 }).withMessage("Rating must be between 0 and 5"),
+        body("specialty").notEmpty().withMessage("Specialty is required"),
+        body("clinic").notEmpty().withMessage("Clinic ID is required"),
     ];
 
     async create(req: Request, res: Response) {
@@ -16,8 +15,8 @@ export class ClinicController {
             if (!errors.isEmpty()) {
                 return res.status(400).json({ errors: errors.array() });
             }
-            const clinic = await Clinic.create(req.body);
-            res.status(201).json({ message: "Clinic created", clinic });
+            const doctor = await Doctor.create(req.body);
+            res.status(201).json({ message: "Doctor created", doctor });
         } catch (error: any) {
             res.status(500).json({ message: "Server error", error: error.message });
         }
@@ -25,22 +24,23 @@ export class ClinicController {
 
     async getAll(req: Request, res: Response) {
         try {
-            const { city, sortByRating } = req.query;
+            const { specialty } = req.query;
             const query: any = {};
-            if (city) query.city = city;
-            const clinics = await Clinic.find(query).sort(sortByRating ? { rating: sortByRating === "desc" ? -1 : 1 } : {});
-            res.status(200).json(clinics);
+            if (specialty) query.specialty = specialty;
+            const doctors = await Doctor.find(query).populate("clinic");
+            res.status(200).json(doctors);
         } catch (error: any) {
             res.status(500).json({ message: "Server error", error: error.message });
         }
     }
+
     async getById(req: Request, res: Response) {
         try {
-            const clinic = await Clinic.findById(req.params.id);
-            if (!clinic) {
-                return res.status(404).json({ message: "Clinic not found" });
+            const doctor = await Doctor.findById(req.params.id).populate("clinic");
+            if (!doctor) {
+                return res.status(404).json({ message: "Doctor not found" });
             }
-            res.status(200).json(clinic);
+            res.status(200).json(doctor);
         } catch (error: any) {
             res.status(500).json({ message: "Server error", error: error.message });
         }
@@ -52,11 +52,11 @@ export class ClinicController {
             if (!errors.isEmpty()) {
                 return res.status(400).json({ errors: errors.array() });
             }
-            const clinic = await Clinic.findByIdAndUpdate(req.params.id, req.body, { new: true });
-            if (!clinic) {
-                return res.status(404).json({ message: "Clinic not found" });
+            const doctor = await Doctor.findByIdAndUpdate(req.params.id, req.body, { new: true });
+            if (!doctor) {
+                return res.status(404).json({ message: "Doctor not found" });
             }
-            res.status(200).json({ message: "Clinic updated", clinic });
+            res.status(200).json({ message: "Doctor updated", doctor });
         } catch (error: any) {
             res.status(500).json({ message: "Server error", error: error.message });
         }
@@ -64,15 +64,15 @@ export class ClinicController {
 
     async delete(req: Request, res: Response) {
         try {
-            const clinic = await Clinic.findByIdAndDelete(req.params.id);
-            if (!clinic) {
-                return res.status(404).json({ message: "Clinic not found" });
+            const doctor = await Doctor.findByIdAndDelete(req.params.id);
+            if (!doctor) {
+                return res.status(404).json({ message: "Doctor not found" });
             }
-            res.status(200).json({ message: "Clinic deleted" });
+            res.status(200).json({ message: "Doctor deleted" });
         } catch (error: any) {
             res.status(500).json({ message: "Server error", error: error.message });
         }
     }
 }
 
-export const clinicController = new ClinicController();
+export const doctorController = new DoctorController();
