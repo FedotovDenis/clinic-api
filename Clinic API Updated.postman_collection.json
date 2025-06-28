@@ -1,0 +1,382 @@
+{
+	"info": {
+		"_postman_id": "614ddc54-b026-4ec1-896d-0c1b85bdc36d",
+		"name": "Clinic API Updated",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "37451096"
+	},
+	"item": [
+		{
+			"name": "Register User",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"email\":\"user@example.com\",\"password\":\"user123\"}"
+				},
+				"url": {
+					"raw": "http://localhost:7000/auth/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7000",
+					"path": [
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"email\":\"admin@example.com\",\"password\":\"admin123\"}"
+				},
+				"url": {
+					"raw": "http://localhost:7000/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7000",
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Reset Password",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"email\":\"admin@example.com\"}"
+				},
+				"url": {
+					"raw": "http://localhost:7000/auth/reset-password",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7000",
+					"path": [
+						"auth",
+						"reset-password"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Clinic",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\":\"New Clinic\",\"address\":\"Side St 456\",\"city\":\"Lviv\",\"rating\":4.0,\"services\":[\"68428fb025a99a2cea1750d7\"]}"
+				},
+				"url": {
+					"raw": "http://localhost:7000/clinics",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7000",
+					"path": [
+						"clinics"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Clinics",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:7000/clinics?city=Kyiv",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7000",
+					"path": [
+						"clinics"
+					],
+					"query": [
+						{
+							"key": "city",
+							"value": "Kyiv"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Clinic",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\":\"City Clinic\",\"address\":\"Main St 123\",\"city\":\"Kyiv\",\"rating\":4.5,\"services\":[\"68428fb025a99a2cea1750d7\"]}"
+				},
+				"url": {
+					"raw": "http://localhost:7000/clinics/684228a929fe3e808bc5d4f7",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7000",
+					"path": [
+						"clinics",
+						"684228a929fe3e808bc5d4f7"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Clinic",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:7000/clinics/684228a929fe3e808bc5d4f7",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7000",
+					"path": [
+						"clinics",
+						"684228a929fe3e808bc5d4f7"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Doctor",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\":\"Jane\",\"surname\":\"Doe\",\"phone\":\"123456789\",\"email\":\"jane@example.com\",\"specialty\":\"Neurologist\",\"clinics\":[\"684228a929fe3e808bc5d4f7\"],\"services\":[\"68428fb025a99a2cea1750d7\"]}"
+				},
+				"url": {
+					"raw": "http://localhost:7000/doctors",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7000",
+					"path": [
+						"doctors"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Doctors",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:7000/doctors?specialty=Neurologist",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7000",
+					"path": [
+						"doctors"
+					],
+					"query": [
+						{
+							"key": "specialty",
+							"value": "Neurologist"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Doctor",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:7000/doctors/684228a929fe3e808bc5d4f7",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7000",
+					"path": [
+						"doctors",
+						"684228a929fe3e808bc5d4f7"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Service",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\":\"Cardiology\"}"
+				},
+				"url": {
+					"raw": "http://localhost:7000/services",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7000",
+					"path": [
+						"services"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Services",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:7000/services?name=Cardiology",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7000",
+					"path": [
+						"services"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "Cardiology"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Service",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:7000/services/68428fb025a99a2cea1750d7",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7000",
+					"path": [
+						"services",
+						"68428fb025a99a2cea1750d7"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "token",
+			"value": ""
+		}
+	]
+}
